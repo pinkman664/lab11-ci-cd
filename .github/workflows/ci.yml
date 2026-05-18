@@ -6,8 +6,6 @@ on:
       - main
       - dev
       - fix
-      - 'feature/**'
-      - 'bugfix/**'
   pull_request:
     branches:
       - main
@@ -19,41 +17,27 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Клонирование репозитория
+      - name: Клонирование репозитория
         uses: actions/checkout@v4
       
-      - name: 🟢 Установка Node.js
+      - name: Установка Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
       
-      - name: 📦 Установка зависимостей
+      - name: Установка зависимостей
         run: npm ci
       
-      - name: 🌐 Установка Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-      
-      - name: 🚀 Запуск веб-сервера
+      - name: Запуск веб-сервера
         run: |
           npx http-server src -p 8080 &
-          sleep 2
+          sleep 3
       
-      - name: 🧪 Запуск тестов
+      - name: Запуск тестов
         run: npm test
         env:
           CI: true
-      
-      - name: 📊 Сохранение результатов тестов
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            test-results/
-            screenshots/
 
   deploy:
     name: Деплой на GitHub Pages
@@ -62,15 +46,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Клонирование репозитория
+      - name: Клонирование репозитория
         uses: actions/checkout@v4
       
-      - name: 🔧 Настройка страницы для деплоя
+      - name: Настройка страницы для деплоя
         run: |
           mkdir -p deploy
           cp src/index.html deploy/
       
-      - name: 🚀 Деплой на GitHub Pages
+      - name: Деплой на GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
