@@ -11,6 +11,12 @@ on:
       - main
       - dev
 
+# Разрешаем деплой
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   test:
     name: Автоматизированные тесты
@@ -24,7 +30,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
       
       - name: Установка зависимостей
         run: npm ci
@@ -42,21 +47,25 @@ jobs:
   deploy:
     name: Деплой на GitHub Pages
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     
     steps:
       - name: Клонирование репозитория
         uses: actions/checkout@v4
       
-      - name: Настройка страницы для деплоя
+      - name: Настройка Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Подготовка файлов для деплоя
         run: |
-          mkdir -p deploy
-          cp src/index.html deploy/
+          mkdir -p _site
+          cp src/index.html _site/
+      
+      - name: Загрузка на Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
       
       - name: Деплой на GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./deploy
-          publish_branch: gh-pages
+        uses: actions/deploy-pages@v4
