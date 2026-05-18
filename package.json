@@ -1,0 +1,16 @@
+{
+  "name": "lab11-ci-cd",
+  "version": "1.0.0",
+  "description": "Лабораторная работа 11 - CI/CD с GitHub Actions",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "node tests/ui-tests.js",
+    "start": "npx http-server src -p 8080"
+  },
+  "keywords": ["ci-cd", "github-actions", "selenium"],
+  "license": "MIT",
+  "devDependencies": {
+    "selenium-webdriver": "^4.15.0",
+    "http-server": "^14.1.1"
+  }
+}
