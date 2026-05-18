@@ -9,8 +9,10 @@
   },
   "keywords": ["ci-cd", "github-actions", "selenium"],
   "license": "MIT",
+  "dependencies": {
+    "selenium-webdriver": "^4.15.0"
+  },
   "devDependencies": {
-    "selenium-webdriver": "^4.15.0",
     "http-server": "^14.1.1"
   }
 }
